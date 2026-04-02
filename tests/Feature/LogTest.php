@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Log;
 use App\Models\User;
-use App\Services\OpenAIService;
+use App\Services\AIService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Tests\TestCase;
@@ -71,7 +71,7 @@ class LogTest extends TestCase
     public function test_user_can_create_log_with_audio_mocked(): void
     {
         // Mock the OpenAIService
-        $mock = Mockery::mock(OpenAIService::class);
+        $mock = Mockery::mock(AIService::class);
         $mock->shouldReceive('transcribe')
             ->once()
             ->andReturn('Just finished fixing the leak at Mr. Smith\'s house, charged $150, need to return Tuesday for the valve');
@@ -84,7 +84,7 @@ class LogTest extends TestCase
                 'next_steps' => 'Return Tuesday for valve',
             ]);
 
-        $this->app->instance(OpenAIService::class, $mock);
+        $this->app->instance(AIService::class, $mock);
 
         // Create a fake audio file with proper mime
         $audioFile = \Illuminate\Http\UploadedFile::fake()->createWithContent('test.webm', str_repeat('fake audio content ', 100));

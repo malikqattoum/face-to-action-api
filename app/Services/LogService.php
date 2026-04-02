@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class LogService
 {
     public function __construct(
-        private OpenAIService $openAIService,
+        private AIService $aiService,
         private AIActionExtractor $aiExtractor
     ) {}
 
@@ -22,11 +22,11 @@ class LogService
             'local'
         );
 
-        // 2. Transcribe via Whisper
-        $transcribedText = $this->openAIService->transcribe($audioFile);
+        // 2. Transcribe via Whisper (OpenAI)
+        $transcribedText = $this->aiService->transcribe($audioFile);
 
-        // 3. Extract structured data via GPT
-        $structuredData = $this->openAIService->extractStructuredData($transcribedText);
+        // 3. Extract structured data via OpenRouter (preferred) or OpenAI GPT fallback
+        $structuredData = $this->aiService->extractStructuredData($transcribedText);
 
         // 4. Extract additional fields via heuristics
         $aiExtracted = $this->aiExtractor->extract($transcribedText);
