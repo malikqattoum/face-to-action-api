@@ -21,6 +21,10 @@ class Log extends Model
         'recorded_at',
         'transcribed_text',
         'audio_path',
+        'issue_type',
+        'parts_used',
+        'estimated_price',
+        'service_type',
     ];
 
     protected function casts(): array
@@ -28,11 +32,18 @@ class Log extends Model
         return [
             'amount' => 'decimal:2',
             'recorded_at' => 'datetime',
+            'parts_used' => 'array',
+            'estimated_price' => 'decimal:2',
         ];
     }
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function photos()
+    {
+        return $this->hasMany(LogPhoto::class);
     }
 }

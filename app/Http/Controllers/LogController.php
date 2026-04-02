@@ -6,6 +6,7 @@ use App\Http\Requests\StoreLogRequest;
 use App\Http\Requests\UpdateLogRequest;
 use App\Http\Resources\LogResource;
 use App\Models\Log;
+use App\Services\AIActionExtractor;
 use App\Services\LogService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +15,8 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class LogController extends Controller
 {
     public function __construct(
-        private LogService $logService
+        private LogService $logService,
+        private AIActionExtractor $extractor
     ) {}
 
     public function index(Request $request): AnonymousResourceCollection
